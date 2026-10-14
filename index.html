@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidades Químicas de Concentración - Taller Interactivo</title>
+    <!-- HTML5 CDNs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .no-select { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
+        .hide { display: none !important; }
+        .scrollable-content { max-height: 80vh; overflow-y: auto; }
+        * { user-drag: none; -webkit-user-drag: none; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 no-select" oncopy="return false" onpaste="return false" oncut="return false">
+
+    <!-- Pantalla de Inicio -->
+    <header id="start-screen" class="min-h-screen flex items-center justify-center bg-blue-600">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full text-center">
+            <h1 class="text-3xl font-bold text-blue-700 mb-4">Unidades de Concentración</h1>
+            <p class="text-gray-600 mb-6">Grado 10° - Química</p>
+            <div class="mb-4">
+                <input type="text" id="student-name" placeholder="Ingresa tu nombre completo" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button onclick="startReading()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-200">Comenzar</button>
+            <p class="text-sm text-gray-500 mt-4 text-left">
+                <strong>Instrucciones:</strong><br>
+                1. Tendrás 15 minutos de lectura obligatoria.<br>
+                2. Luego se habilitará un cuestionario de 35 minutos.<br>
+                3. Puedes consultar la lectura durante la prueba.<br>
+                4. <span class="text-red-500 font-bold">PROHIBIDO</span> salir de la pestaña. Si lo haces, se descontará 1.0. A la segunda vez, se enviará la prueba.
+            </p>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal (Lectura + Cuestionario) -->
+    <main id="main-container" class="hide flex flex-col md:flex-row h-screen w-full">
+        
+        <!-- Panel Izquierdo: Lectura -->
+        <section class="w-full md:w-1/2 p-6 bg-white border-r shadow-lg scrollable-content">
+            <header class="sticky top-0 bg-white pb-2 border-b mb-4 flex justify-between items-center z-10">
+                <h2 class="text-2xl font-bold text-blue-800">Material de Estudio Extendido</h2>
+                <div id="reading-timer-badge" class="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full font-bold">
+                    Lectura: <span id="reading-time">15:00</span>
+                </div>
+            </header>
+            
+            <article class="prose max-w-none text-sm leading-relaxed">
+                <p class="mb-4">Las unidades de concentración nos permiten expresar la cantidad exacta de soluto presente en una determinada cantidad de solvente o solución. A continuación, exploraremos las más importantes, incluyendo definiciones, fórmulas, ejemplos y su utilidad en la vida diaria.</p>
+
+                <!-- Unidades Físicas -->
+                <section class="mb-8">
+                    <h3 class="text-xl font-bold mt-4 text-blue-600 border-b-2 border-blue-200 pb-1">1. Unidades Físicas de Concentración</h3>
+                    <p class="text-gray-600 mb-4">Expresan la concentración en función del peso (masa) y el volumen, sin considerar la naturaleza química del soluto (moles).</p>
+
+                    <!-- % m/m -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">1.1 Porcentaje Masa a Masa (% m/m o % p/p)</h4>
+                        <p><strong>Definición:</strong> Indica los gramos de soluto presentes en 100 gramos de solución.</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: % m/m = (masa soluto / masa solución) × 100</p>
+                        <p class="text-xs italic text-gray-500 mb-2">* Recuerda que: masa solución = masa soluto + masa solvente</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded my-2">
+                            <p class="font-bold text-blue-800 text-xs uppercase mb-1">Ejercicio Resuelto</p>
+                            <p><strong>Enunciado:</strong> Se disuelven 20 g de azúcar en 80 g de agua. ¿Cuál es el % m/m?</p>
+                            <p><strong>Desarrollo:</strong><br>
+                                1. Masa soluto = 20 g<br>
+                                2. Masa solvente = 80 g<br>
+                                3. Masa solución = 20 g + 80 g = 100 g<br>
+                                4. % m/m = (20 / 100) × 100 = <strong>20 %</strong>
+                            </p>
+                        </div>
+                        <p><strong>Aplicación diaria:</strong> Se utiliza mucho en la industria farmacéutica para cremas y ungüentos (ej. crema de hidrocortisona al 1%) y en aleaciones metálicas como el acero o el bronce.</p>
+                    </div>
+
+                    <!-- % m/v -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">1.2 Porcentaje Masa a Volumen (% m/v)</h4>
+                        <p><strong>Definición:</strong> Indica los gramos de soluto disueltos en 100 mililitros (mL) de solución.</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: % m/v = (masa soluto (g) / volumen solución (mL)) × 100</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded my-2">
+                            <p class="font-bold text-blue-800 text-xs uppercase mb-1">Ejercicio Resuelto</p>
+                            <p><strong>Enunciado:</strong> Si tenemos 500 mL de una solución que contiene 25 g de sal, ¿cuál es su concentración en % m/v?</p>
+                            <p><strong>Desarrollo:</strong><br>
+                                % m/v = (25 g / 500 mL) × 100<br>
+                                % m/v = 0.05 × 100 = <strong>5 %</strong>
+                            </p>
+                        </div>
+                        <p><strong>Aplicación diaria:</strong> Suero fisiológico hospitalario (NaCl al 0.9% m/v) y dosificación de jarabes para la tos o analgésicos pediátricos.</p>
+                    </div>
+
+                    <!-- % v/v -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">1.3 Porcentaje Volumen a Volumen (% v/v)</h4>
+                        <p><strong>Definición:</strong> Indica los mililitros de soluto por cada 100 mililitros de solución. Se usa cuando soluto y solvente son líquidos.</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: % v/v = (volumen soluto / volumen solución) × 100</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded my-2">
+                            <p class="font-bold text-blue-800 text-xs uppercase mb-1">Ejercicio Resuelto</p>
+                            <p><strong>Enunciado:</strong> Un vino tiene un volumen de 750 mL y contiene 90 mL de alcohol etílico. Calcula el % v/v.</p>
+                            <p><strong>Desarrollo:</strong><br>
+                                % v/v = (90 mL / 750 mL) × 100<br>
+                                % v/v = 0.12 × 100 = <strong>12 %</strong>
+                            </p>
+                        </div>
+                        <p><strong>Aplicación diaria:</strong> Grado alcohólico en licores, cervezas y vinos; también en el alcohol antiséptico de farmacia (generalmente al 70% v/v).</p>
+                    </div>
+
+                    <!-- ppm -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">1.4 Partes por millón (ppm)</h4>
+                        <p><strong>Definición:</strong> Se utiliza para disoluciones muy diluidas. Indica los miligramos (mg) de soluto por cada litro (L) o kilogramo (kg) de solución.</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: ppm = mg soluto / Litros de solución</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded my-2">
+                            <p class="font-bold text-blue-800 text-xs uppercase mb-1">Ejercicio Resuelto</p>
+                            <p><strong>Enunciado:</strong> Una muestra de agua de 5 Litros contiene 15 mg de iones de Flúor. ¿Cuál es su concentración en ppm?</p>
+                            <p><strong>Desarrollo:</strong><br>
+                                ppm = 15 mg / 5 L = <strong>3 ppm</strong>
+                            </p>
+                        </div>
+                        <p><strong>Aplicación diaria:</strong> Medición de contaminantes en el aire, control de calidad del agua potable y cantidad de cloro en las piscinas.</p>
+                    </div>
+                </section>
+
+                <!-- Unidades Químicas -->
+                <section class="mb-8">
+                    <h3 class="text-xl font-bold mt-4 text-blue-600 border-b-2 border-blue-200 pb-1">2. Unidades Químicas de Concentración</h3>
+                    <p class="text-gray-600 mb-4">Se basan en el uso de la "mol", que es la unidad química de cantidad de sustancia (relacionada con la masa molar y el Número de Avogadro).</p>
+
+                    <!-- Molaridad -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">2.1 Molaridad (M)</h4>
+                        <p><strong>Definición:</strong> Es la cantidad de moles de soluto disueltos en exactamente un Litro (1 L) de solución. Es la unidad más utilizada en química.</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: M = moles de soluto (n) / Volumen solución en Litros (V)</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded my-2">
+                            <p class="font-bold text-blue-800 text-xs uppercase mb-1">Ejercicio Resuelto</p>
+                            <p><strong>Enunciado:</strong> Se disuelven 40 g de NaOH (Hidróxido de sodio) en agua hasta alcanzar un volumen de 2 Litros. (Masa molar NaOH = 40 g/mol). Calcula la Molaridad.</p>
+                            <p><strong>Desarrollo:</strong><br>
+                                1. Convertir gramos a moles (n = masa / masa molar):<br>
+                                   n = 40 g / 40 g/mol = 1 mol.<br>
+                                2. Aplicar fórmula de Molaridad:<br>
+                                   M = 1 mol / 2 L = <strong>0.5 M</strong>
+                            </p>
+                        </div>
+                        <p><strong>Aplicación diaria:</strong> Preparación de reactivos estandarizados en los laboratorios escolares e industriales y análisis de sangre.</p>
+                    </div>
+
+                    <!-- Molalidad -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">2.2 Molalidad (m)</h4>
+                        <p><strong>Definición:</strong> Es el número de moles de soluto por cada kilogramo (kg) de solvente puro. A diferencia de la molaridad, no depende de la temperatura ya que no usa volumen.</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: m = moles de soluto (n) / masa solvente en Kg</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded my-2">
+                            <p class="font-bold text-blue-800 text-xs uppercase mb-1">Ejercicio Resuelto</p>
+                            <p><strong>Enunciado:</strong> Calcular la molalidad de una solución preparada disolviendo 2 moles de NaCl en 500 g de agua.</p>
+                            <p><strong>Desarrollo:</strong><br>
+                                1. Convertir gramos de agua a Kg: 500 g = 0.5 Kg<br>
+                                2. Aplicar fórmula:<br>
+                                   m = 2 moles / 0.5 Kg = <strong>4 m (molal)</strong>
+                            </p>
+                        </div>
+                        <p><strong>Aplicación diaria:</strong> Formulación de líquidos anticongelantes para radiadores de autos (sus propiedades no varían con el calor del motor al depender de la masa y no del volumen).</p>
+                    </div>
+
+                    <!-- Normalidad -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">2.3 Normalidad (N)</h4>
+                        <p><strong>Definición:</strong> Número de equivalentes-gramo de soluto por Litro de solución. Depende del tipo de reacción (ácido, base o sal).</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: N = equivalentes-gramo de soluto / Volumen en Litros</p>
+                        <p class="text-xs italic text-gray-500 mb-2">* Relación útil: N = Molaridad × (número de H+, OH- o carga)</p>
+                        <p><strong>Aplicación diaria:</strong> Titulaciones ácido-base, análisis de dureza del agua y neutralización industrial de residuos tóxicos.</p>
+                    </div>
+
+                    <!-- Fracción Molar -->
+                    <div class="mb-6">
+                        <h4 class="font-bold text-lg text-gray-800">2.4 Fracción Molar (X)</h4>
+                        <p><strong>Definición:</strong> Es la relación (cociente) entre el número de moles de un componente y el número de moles totales de la solución. La suma de las fracciones molares de todos los componentes siempre es 1.</p>
+                        <p class="bg-gray-100 p-2 rounded inline-block font-mono text-xs my-2">Fórmula: Xa = moles de A / moles totales</p>
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded my-2">
+                            <p class="font-bold text-blue-800 text-xs uppercase mb-1">Ejercicio Resuelto</p>
+                            <p><strong>Enunciado:</strong> En un recipiente hay 3 moles de gas Helio y 7 moles de gas Argón. ¿Cuál es la fracción molar del Helio?</p>
+                            <p><strong>Desarrollo:</strong><br>
+                                1. Moles totales = 3 + 7 = 10 moles.<br>
+                                2. X_Helio = 3 / 10 = <strong>0.3</strong> (No tiene unidades)
+                            </p>
+                        </div>
+                        <p><strong>Aplicación diaria:</strong> Cálculo de presiones parciales en mezclas de gases, como el oxígeno que respiran los buzos submarinos, y termodinámica química.</p>
+                    </div>
+                </section>
+            </article>
+        </section>
+
+        <!-- Panel Derecho: Acciones y Cuestionario -->
+        <section class="w-full md:w-1/2 p-6 bg-gray-50 flex flex-col scrollable-content">
+            
+            <!-- Panel de Espera -->
+            <div id="waiting-panel" class="flex-1 flex flex-col items-center justify-center text-center">
+                <svg class="w-24 h-24 text-blue-400 mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <h2 class="text-2xl font-bold text-gray-700 mb-2">Tiempo de Lectura</h2>
+                <p class="text-gray-500 mb-6">Lee detenidamente el material de la izquierda (ahora ampliado con ejemplos). El cuestionario se habilitará cuando el tiempo finalice.</p>
+                <button id="btn-start-quiz" disabled class="bg-gray-400 text-white font-bold py-3 px-8 rounded-lg cursor-not-allowed">Esperando tiempo...</button>
+                
+                <!-- Botón oculto para el profesor (saltar timer) -->
+                <button onclick="skipTimer()" class="mt-10 text-xs text-gray-300 hover:text-gray-500">Omitir (Solo Docente)</button>
+            </div>
+
+            <!-- Panel de Prueba -->
+            <div id="quiz-panel" class="hide flex-1">
+                <header class="sticky top-0 bg-gray-50 pb-2 border-b mb-4 flex justify-between items-center z-10">
+                    <h2 class="text-xl font-bold text-red-600">Prueba Saber</h2>
+                    <div class="bg-red-200 text-red-800 px-3 py-1 rounded-full font-bold">
+                        Tiempo Restante: <span id="quiz-time">35:00</span>
+                    </div>
+                </header>
+
+                <form id="quiz-form" class="space-y-6">
+                    <!-- Preguntas Cerradas se inyectan aquí -->
+                    <div id="mcq-container"></div>
+                    
+                    <hr class="border-gray-300">
+                    <h3 class="text-lg font-bold text-blue-800">Preguntas Abiertas (Desarrollo)</h3>
+                    <!-- Preguntas Abiertas se inyectan aquí -->
+                    <div id="open-container" class="space-y-4"></div>
+
+                    <button type="button" onclick="submitQuiz()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg mt-6 shadow-lg">Finalizar y Enviar Prueba</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pantalla Final -->
+    <section id="end-screen" class="hide min-h-screen flex items-center justify-center bg-gray-900 p-4">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-3xl w-full flex flex-col md:flex-row gap-8 items-center">
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-3xl font-bold text-green-600 mb-2">¡Prueba Finalizada!</h1>
+                <p class="text-xl mb-2">Estudiante: <span id="res-name" class="font-bold"></span></p>
+                <div class="bg-gray-100 p-6 rounded-lg text-center my-4 border-2 border-dashed border-gray-300 relative">
+                    <p class="text-gray-500 uppercase text-sm font-bold tracking-widest">Puntaje Base (Cerradas)</p>
+                    <p id="res-score" class="text-6xl font-black text-blue-600 my-2">0.0 / 5.0</p>
+                    <p id="res-penalty" class="text-red-500 font-bold text-sm h-5"></p>
+                    <div class="absolute -right-4 -top-4 bg-yellow-400 text-yellow-900 font-bold w-12 h-12 rounded-full flex items-center justify-center shadow">NOTA</div>
+                </div>
+                <p class="text-sm text-gray-600 italic">* Las preguntas abiertas serán calificadas por el docente a partir del reporte.</p>
+                
+                <button onclick="generatePDF()" class="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded shadow flex items-center justify-center w-full md:w-auto">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Descargar Informe PDF
+                </button>
+            </div>
+            
+            <div class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg border">
+                <p class="font-bold text-gray-700 mb-2">Código para Docente</p>
+                <div id="qrcode" class="p-2 bg-white rounded shadow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts de Lógica -->
+    <script>
+        const mcqData = [
+            { q: "¿Qué unidad de concentración expresa los moles de soluto por litro de solución?", options: ["Molalidad", "Molaridad", "Normalidad", "Fracción Molar"], answer: 1 },
+            { q: "Si tenemos una solución al 10% m/m, esto significa que:", options: ["Hay 10 g de soluto en 100 mL de agua", "Hay 10 g de soluto en 100 g de solución", "Hay 10 g de solvente en 100 g de soluto", "Hay 10 moles en 100 g de solución"], answer: 1 },
+            { q: "¿Cuál es la principal diferencia entre Molaridad y Molalidad?", options: ["La Molaridad usa masa y la Molalidad volumen", "La Molaridad depende del volumen de la solución y la Molalidad de la masa del solvente", "Son exactamente lo mismo", "La Molaridad es para líquidos y la Molalidad para sólidos"], answer: 1 },
+            { q: "La unidad más útil para expresar concentraciones muy pequeñas, como contaminantes en el agua, es:", options: ["Porcentaje m/v", "Fracción Molar", "Partes por millón (ppm)", "Normalidad"], answer: 2 },
+            { q: "La suma de las fracciones molares de todos los componentes en una solución es siempre igual a:", options: ["100", "El número de Avogadro", "Depende del solvente", "1"], answer: 3 },
+            { q: "¿Qué expresa el porcentaje volumen a volumen (% v/v)?", options: ["Gramos de soluto en 100 mL de solución", "Volumen de soluto por cada 100 unidades de volumen de solución", "Litros de soluto por litro de solvente", "Moles por litro"], answer: 1 },
+            { q: "Para calcular la Normalidad de un ácido, se necesita conocer obligatoriamente:", options: ["El volumen exacto del recipiente", "La densidad del solvente", "El número de equivalentes gramo", "La temperatura de ebullición"], answer: 2 },
+            { q: "Una aplicación diaria del % v/v se encuentra típicamente en:", options: ["El grado alcohólico de las bebidas", "Las cremas dermatológicas", "La sal de cocina", "Los metales y aleaciones"], answer: 0 },
+            { q: "El suero fisiológico es una solución de NaCl al 0.9% m/v. Esto significa que contiene:", options: ["0.9 moles de NaCl en 1 L", "0.9 g de NaCl en 100 mL de solución", "0.9 g de NaCl en 100 g de agua", "9 g de NaCl en 10 mL de solución"], answer: 1 },
+            { q: "Si a una solución concentrada se le añade más solvente, su concentración:", options: ["Aumenta", "Permanece igual", "Disminuye", "Se vuelve infinita"], answer: 2 }
+        ];
+
+        const openData = [
+            "1. Calcula la Molaridad de una solución que contiene 20 g de NaOH (Masa molar = 40 g/mol) en 500 mL de solución. Explica tu procedimiento basándote en la fórmula de la lectura.",
+            "2. En la etiqueta de un producto dice 'Hipoclorito al 5% m/v'. Si tienes una botella de 2 litros, ¿cuántos gramos de hipoclorito hay en total? Muestra el cálculo paso a paso.",
+            "3. Se disuelven 15 g de sal en 85 g de agua. ¿Cuál es el porcentaje en masa (% m/m) de la solución? Muestra el proceso detallado como en el ejemplo."
+        ];
+
+        let studentName = "";
+        let readingTime = 15 * 60; // 15 minutos
+        let quizTime = 35 * 60; // 35 minutos
+        let phase = 'start';
+        let readingInterval, quizInterval;
+        let cheatCount = 0;
+        let penalty = 0.0;
+        let finalScore = 0.0;
+        let studentAnswers = [];
+        let studentOpenAnswers = [];
+
+        function initQuizUI() {
+            const mcqContainer = document.getElementById('mcq-container');
+            mcqData.forEach((item, index) => {
+                let html = `<div class="bg-white p-4 rounded border shadow-sm"><p class="font-bold mb-2">${index + 1}. ${item.q}</p><div class="space-y-1">`;
+                item.options.forEach((opt, oIndex) => {
+                    html += `<label class="flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-50 rounded">
+                        <input type="radio" name="q${index}" value="${oIndex}" class="form-radio text-blue-600">
+                        <span>${opt}</span>
+                    </label>`;
+                });
+                html += `</div></div>`;
+                mcqContainer.innerHTML += html;
+            });
+
+            const openContainer = document.getElementById('open-container');
+            openData.forEach((q, index) => {
+                openContainer.innerHTML += `<div class="bg-white p-4 rounded border shadow-sm">
+                    <p class="font-bold mb-2">${q}</p>
+                    <textarea id="open-${index}" rows="3" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500" placeholder="Escribe tu respuesta y procedimiento aquí..."></textarea>
+                </div>`;
+            });
+        }
+
+        function startReading() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (!nameInput) { alert("Por favor ingresa tu nombre."); return; }
+            studentName = nameInput;
+            
+            document.getElementById('start-screen').classList.add('hide');
+            document.getElementById('main-container').classList.remove('hide');
+            
+            phase = 'reading';
+            initQuizUI();
+            
+            readingInterval = setInterval(() => {
+                readingTime--;
+                updateTimerDisplay('reading-time', readingTime);
+                if (readingTime <= 0) enableQuiz();
+            }, 1000);
+        }
+
+        function enableQuiz() {
+            clearInterval(readingInterval);
+            document.getElementById('reading-timer-badge').classList.replace('bg-yellow-200', 'bg-green-200');
+            document.getElementById('reading-timer-badge').classList.replace('text-yellow-800', 'text-green-800');
+            document.getElementById('reading-time').innerText = "Completado";
+            
+            const btn = document.getElementById('btn-start-quiz');
+            btn.disabled = false;
+            btn.classList.replace('bg-gray-400', 'bg-blue-600');
+            btn.classList.replace('cursor-not-allowed', 'hover:bg-blue-700');
+            btn.innerText = "¡Comenzar Prueba!";
+            btn.onclick = startQuizPhase;
+        }
+
+        function skipTimer() { enableQuiz(); }
+
+        function startQuizPhase() {
+            phase = 'quiz';
+            document.getElementById('waiting-panel').classList.add('hide');
+            document.getElementById('quiz-panel').classList.remove('hide');
+            
+            quizInterval = setInterval(() => {
+                quizTime--;
+                updateTimerDisplay('quiz-time', quizTime);
+                if (quizTime <= 0) {
+                    alert("Se acabó el tiempo. La prueba se enviará automáticamente.");
+                    submitQuiz(true);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay(elementId, timeInSeconds) {
+            const m = Math.floor(timeInSeconds / 60).toString().padStart(2, '0');
+            const s = (timeInSeconds % 60).toString().padStart(2, '0');
+            document.getElementById(elementId).innerText = `${m}:${s}`;
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if (phase === 'quiz') {
+                if (document.hidden) {
+                    cheatCount++;
+                    if (cheatCount === 1) {
+                        penalty = 1.0;
+                        alert("¡ADVERTENCIA! Has salido de la pestaña. Esta acción está prohibida. Se ha descontado 1.0 de tu nota base.");
+                    } else if (cheatCount >= 2) {
+                        alert("¡Sanción! Has abandonado la pestaña por segunda vez. La prueba se finalizará en este momento con la calificación actual.");
+                        submitQuiz(true);
+                    }
+                }
+            }
+        });
+
+        function submitQuiz(auto = false) {
+            if (!auto && !confirm("¿Estás seguro de finalizar y enviar tus respuestas?")) return;
+            
+            clearInterval(quizInterval);
+            phase = 'end';
+            
+            let correct = 0;
+            studentAnswers = [];
+            mcqData.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const val = selected ? parseInt(selected.value) : -1;
+                studentAnswers.push(val);
+                if (val === item.answer) correct++;
+            });
+
+            studentOpenAnswers = [];
+            openData.forEach((_, index) => {
+                const text = document.getElementById(`open-${index}`).value.trim();
+                studentOpenAnswers.push(text || "Sin respuesta");
+            });
+
+            let rawScore = (correct / mcqData.length) * 5.0;
+            finalScore = Math.max(0.0, rawScore - penalty);
+
+            document.getElementById('main-container').classList.add('hide');
+            document.getElementById('end-screen').classList.remove('hide');
+            
+            document.getElementById('res-name').innerText = studentName;
+            document.getElementById('res-score').innerText = finalScore.toFixed(1);
+            if (penalty > 0) {
+                document.getElementById('res-penalty').innerText = `Penalización aplicada: -${penalty.toFixed(1)} (Salida de pestaña)`;
+            }
+
+            const qrData = JSON.stringify({
+                n: studentName,
+                s: finalScore.toFixed(1),
+                c: correct,
+                p: penalty,
+                d: new Date().toLocaleDateString()
+            });
+            new QRCode(document.getElementById("qrcode"), {
+                text: qrData,
+                width: 128,
+                height: 128
+            });
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(18);
+            doc.setTextColor(0, 51, 153);
+            doc.text("Reporte de Prueba: Unidades de Concentración", 10, 20);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Estudiante: ${studentName}`, 10, 30);
+            doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 10, 37);
+            doc.text(`Puntaje Preguntas Cerradas: ${finalScore.toFixed(1)} / 5.0`, 10, 44);
+            if(penalty > 0) {
+                doc.setTextColor(255, 0, 0);
+                doc.text(`* Sanción aplicada por salir de la pestaña: -${penalty.toFixed(1)}`, 10, 51);
+                doc.setTextColor(0, 0, 0);
+            }
+
+            doc.setFontSize(14);
+            doc.text("Detalle de Respuestas Cerradas:", 10, 65);
+            doc.setFontSize(10);
+            let y = 72;
+            mcqData.forEach((q, i) => {
+                const ansObj = studentAnswers[i];
+                const givenAns = ansObj >= 0 ? q.options[ansObj] : "No respondió";
+                const status = ansObj === q.answer ? "(Correcta)" : `(Inc. La correcta era: ${q.options[q.answer]})`;
+                
+                let line = `${i+1}. ${givenAns} ${status}`;
+                const splitText = doc.splitTextToSize(line, 190);
+                doc.text(splitText, 10, y);
+                y += splitText.length * 6;
+                if (y > 280) { doc.addPage(); y = 20; }
+            });
+
+            y += 10;
+            if (y > 260) { doc.addPage(); y = 20; }
+            doc.setFontSize(14);
+            doc.text("Respuestas a Preguntas Abiertas:", 10, y);
+            y += 8;
+            doc.setFontSize(10);
+            
+            openData.forEach((q, i) => {
+                doc.setFont(undefined, 'bold');
+                const qLines = doc.splitTextToSize(q, 190);
+                doc.text(qLines, 10, y);
+                y += qLines.length * 5;
+                
+                doc.setFont(undefined, 'normal');
+                const ansLines = doc.splitTextToSize("R/ " + studentOpenAnswers[i], 190);
+                doc.text(ansLines, 10, y);
+                y += ansLines.length * 6 + 4;
+                
+                if (y > 270) { doc.addPage(); y = 20; }
+            });
+
+            doc.save(`Prueba_Quimica_${studentName.replace(/\s+/g, '_')}.pdf`);
+        }
+    </script>
+</body>
+</html>
